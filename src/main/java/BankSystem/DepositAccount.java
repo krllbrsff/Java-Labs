@@ -1,12 +1,16 @@
 package BankSystem;
 
+/**
+ * класс депозитного счета
+ */
 public class DepositAccount extends Account {
     public int depositPeriod;
 
-    public DepositAccount(Customer owner, int depositPeriod){
+    public DepositAccount(Customer owner, int depositPeriod) {
         super(owner);
         this.depositPeriod = depositPeriod;
     }
+
     @Override
     public Result withdraw(double amount) {
         if (depositPeriod <= 0) {

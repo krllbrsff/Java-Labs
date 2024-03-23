@@ -3,6 +3,9 @@ package BankSystem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * класс транзакции
+ */
 @Getter
 @AllArgsConstructor
 public class Transaction {

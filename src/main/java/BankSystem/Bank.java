@@ -3,7 +3,9 @@ package BankSystem;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Класс банка.
+ */
 public class Bank {
     List<DebetAccount> debetAccounts = new ArrayList<>();
     List<CreditAccount> creditAccounts = new ArrayList<>();
@@ -11,18 +13,38 @@ public class Bank {
     private double percent;
     private double creditFee;
 
+    /**
+     * Создание дебетового счета
+     *
+     * @param customer владелец счета
+     * @return созданный счет
+     */
     public Account NewDebetAccount(Customer customer) {
         DebetAccount account = new DebetAccount(customer);
         debetAccounts.add(account);
         return account;
     }
 
+    /**
+     * Создание депозитного счета
+     *
+     * @param customer      владелец счета
+     * @param depositPeriod Период депозита
+     * @return созданный счет
+     */
     public Account NewDepositAccount(Customer customer, int depositPeriod) {
         DepositAccount account = new DepositAccount(customer, depositPeriod);
         depositAccounts.add(account);
         return account;
     }
 
+    /**
+     * Создание депозитного счета
+     *
+     * @param customer владелец счета
+     * @param limit    кредитный лимит
+     * @return созданный счет
+     */
     public Account NewCreditAccount(Customer customer, int limit) {
         CreditAccount account = new CreditAccount(customer, limit);
         creditAccounts.add(account);

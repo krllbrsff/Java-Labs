@@ -2,8 +2,10 @@ package BankSystem;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 
+/**
+ * класс клиента банка
+ */
 @Data
 @Builder
 public class Customer {
