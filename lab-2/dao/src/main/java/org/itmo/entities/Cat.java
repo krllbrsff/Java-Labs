@@ -1,21 +1,22 @@
 package org.itmo.entities;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.itmo.common.Color;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Entity
-@Table (name = "cats")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "cats", schema = "catsandowners")
 public class Cat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +26,14 @@ public class Cat {
     private Date birthDate;
     @Enumerated(EnumType.STRING)
     private Color color;
-    @ManyToOne
-    private Owner owner;
+    @Column(name = "owner_id")
+    private Long ownerId;
     @ManyToMany
+    @JoinTable(
+            name = "cat_friends",
+            schema = "catsandowners",
+            joinColumns = @JoinColumn(name = "cat_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id")
+    )
     private List<Cat> friends = new ArrayList<>();
 }

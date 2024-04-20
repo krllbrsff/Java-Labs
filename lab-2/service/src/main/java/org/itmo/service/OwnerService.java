@@ -5,16 +5,22 @@ import org.itmo.DTO.CatDTO;
 import org.itmo.DTO.OwnerDTO;
 import org.itmo.dao.IOwnerDao;
 import org.itmo.entities.Owner;
+import org.itmo.specifications.OwnerSpecification;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 @AllArgsConstructor
 public class OwnerService {
     private final IOwnerDao ownerDao;
+    private final CatService catService;
 
     public OwnerDTO getOwner(Long id) {
-        return new OwnerDTO(ownerDao.findById(id));
+        return ownerDao.findById(id).map(OwnerDTO::new).orElse(null);
     }
 
     public List<OwnerDTO> getAllOwners() {
@@ -26,24 +32,16 @@ public class OwnerService {
     }
 
     public void deleteOwner(Long id) {
-        ownerDao.delete(ownerDao.findById(id));
+        ownerDao.findById(id).ifPresent(ownerDao::delete);
     }
 
-    public void addCat(Long ownerId, CatDTO cat) {
-        Owner owner = ownerDao.findById(ownerId);
-        if (owner != null) {
-            owner.getCats().add(cat.toEntity());
-            cat.toEntity().setOwner(owner);
-            ownerDao.update(owner);
-        }
+    public List<CatDTO> getCatsByOwnerId(Long ownerId) {
+        return catService.getCatsByOwnerId(ownerId);
     }
 
-    public void deleteCat(Long ownerId, CatDTO cat) {
-        Owner owner = ownerDao.findById(ownerId);
-        if (owner != null) {
-            owner.getCats().remove(cat.toEntity());
-            cat.toEntity().setOwner(null);
-            ownerDao.update(owner);
-        }
+    public List<OwnerDTO> getOwnersByFilters(String name, Date birthDate) {
+        Specification<Owner> spec = Specification.where(OwnerSpecification.hasName(name))
+                .and(OwnerSpecification.hasBirthDate(birthDate));
+        return ownerDao.findAll(spec).stream().map(OwnerDTO::new).collect(Collectors.toList());
     }
 }
