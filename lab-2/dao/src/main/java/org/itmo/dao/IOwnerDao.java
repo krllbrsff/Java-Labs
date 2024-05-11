@@ -1,13 +1,10 @@
 package org.itmo.dao;
 
 import org.itmo.entities.Owner;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-public interface IOwnerDao {
-    Owner findById(Long id);
-    List<Owner> findAll();
-    void save(Owner owner);
-    void delete(Owner owner);
-    void update(Owner owner);
+@Repository
+public interface IOwnerDao extends JpaRepository<Owner, Long>, JpaSpecificationExecutor<Owner> {
 }
